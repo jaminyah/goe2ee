@@ -1,0 +1,2 @@
+$ openssl genrsa -out prikey.pem
+$ openssl rsa -in prikey.pem -pubout > pubkey.pem
