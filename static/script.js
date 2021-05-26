@@ -32,7 +32,7 @@ function publicKeyEncrypt() {
         //default_public_exponent:"010001"
     });
  
-    rsaPubKey = "-----BEGIN PUBLIC KEY-----" + rsaPubKey + "-----END PUBLIC KEY-----";
+    //rsaPubKey = "-----BEGIN PUBLIC KEY-----" + rsaPubKey + "-----END PUBLIC KEY-----";
     encoder.setPublicKey(rsaPubKey);
 
     let encoded = encoder.encrypt($('#input-text').val());
