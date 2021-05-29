@@ -2,7 +2,6 @@
 package main
 
 import (
-	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/json"
@@ -25,15 +24,38 @@ func main() {
 
 func sendPublicKey(w http.ResponseWriter, r *http.Request) {
 
-	publicKeyBytes := genKeys()
+	//publicKeyBytes := genKeys()
+	publicKey := fetchPubKey()
 
-	body := map[string]interface{}{"pubkey": publicKeyBytes, "msg": "success"}
+	body := map[string]interface{}{"pubkey": publicKey, "msg": "success"}
 
 	//set json response
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	json.NewEncoder(w).Encode(body)
 }
 
+func fetchPubKey() []byte {
+
+	pubkey, err := os.ReadFile("./pubkey.pem")
+	if err != nil {
+		fmt.Println("Cannot read pubkey.pem")
+	}
+
+	block, _ := pem.Decode([]byte(pubkey))
+	pub, err := x509.ParsePKIXPublicKey(block.Bytes)
+	if err != nil {
+		fmt.Println("Failed: " + err.Error())
+	}
+	rsaPubKey, _ := pub.(*rsa.PublicKey)
+
+	publicKeyBytes, err := x509.MarshalPKIXPublicKey(rsaPubKey)
+	if err != nil {
+		fmt.Println("Cannot Marshal pubkey")
+	}
+	return publicKeyBytes
+}
+
+/*
 func genKeys() []byte {
 	// generate key
 	privatekey, err := rsa.GenerateKey(rand.Reader, 2048)
@@ -83,3 +105,4 @@ func genKeys() []byte {
 
 	return publicKeyBytes
 }
+*/
