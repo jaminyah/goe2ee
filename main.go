@@ -47,6 +47,9 @@ func fetchPubKey() []byte {
 		fmt.Println("Failed: " + err.Error())
 	}
 	rsaPubKey, _ := pub.(*rsa.PublicKey)
+	if err != nil {
+		fmt.Println("Unable to convert to rsa public key")
+	}
 
 	publicKeyBytes, err := x509.MarshalPKIXPublicKey(rsaPubKey)
 	if err != nil {
@@ -102,7 +105,6 @@ func genKeys() []byte {
 		fmt.Printf("error when encode public pem: %s \n", err)
 		os.Exit(1)
 	}
-
 	return publicKeyBytes
 }
 */
