@@ -19,6 +19,7 @@ function getPublicKey() {
             console.log(data.pubkey)
             console.log(data.msg);
             rsaPubKey = data.pubkey;
+            window.localStorage.setItem('rsaPublic', rsaPubKey)
         })
         .catch(function(error) {
             console.log(error);
@@ -32,7 +33,6 @@ function publicKeyEncrypt() {
         //default_public_exponent:"010001"
     });
  
-    //rsaPubKey = "-----BEGIN PUBLIC KEY-----" + rsaPubKey + "-----END PUBLIC KEY-----";
     encoder.setPublicKey(rsaPubKey);
 
     let encoded = encoder.encrypt($('#input-text').val());
